@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <ctype.h>
+#define SIZE 10
+
+
+int getch();
+void ungetch(int);
+
+int getint(int *pn)
+{
+    int c,d,sign;
+    while(isspace(c=getch()))
+        ;
+    if (!isdigit(c)&&c!=EOF&&c!='+'&&c!='-'){
+        ungetch(c);
+        return 0;
+    }
+    sign=(c=='-')?-1:1;
+    if (c=='+'||c=='-'){
+        d=getch();
+        if (!isdigit(d))
+        {
+            ungetch(d);
+            ungetch(c);
+            return d;
+        }else
+        c=d;
+    }
+    for(*pn=0;isdigit(c);c=getch()){
+            printf("\n wanna see this %d",c);
+            *pn=10* (*pn)+(c-'0');
+    }
+    *pn*=sign;
+    if(c!=EOF)
+        ungetch(c);
+    return *pn;
+}
+
+
+int main()
+{
+    int n,array1[SIZE];
+    for(n=0;n<SIZE&&(array1[n]=getint(&array1[n]))!=EOF;n++){
+        printf("\n int[%d]:%d \n",n,array1[n]);
+    }
+    return 0;
+}
